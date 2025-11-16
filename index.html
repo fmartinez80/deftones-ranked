@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEFTONES RANKED</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=Poppins:wght@600;700&display=swap');
+
+  :root {
+    --purple: #571857;
+    --bg-top: #080808;
+    --bg-bottom: #000000;
+  }
+
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+  }
+
+  .page-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+
+.header {
+  text-align: center;
+  padding: 2.5rem 1rem 1.75rem;
+}
+
+.header .logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 0.75rem;
+}
+
+.header h2 {
+  max-width: 42rem;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 200;     /* extra light */
+  font-size: 1rem;    /* or 0.85rem if you want smaller */
+  line-height: 1.6;
+}
+
+  .header-primary {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .header-secondary {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 1.2em;
+    text-transform: uppercase;
+  }
+
+  .header-lead {
+    margin: 1.5rem auto 0;
+    max-width: 22rem;
+    font-size: 0.8rem;
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  /* MAIN LAYOUT */
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+    box-sizing: border-box;
+  }
+
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* RANKING CARD */
+
+.song-card-frame {
+  background: linear-gradient(to bottom, #cccccc, #666666);
+  border-radius: 12px;       /* outer radius */
+  padding: 2px;              /* stroke thickness */
+}
+
+.song-card {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 10px;
+  /* remove solid border here */
+  border: none;
+  background-color: #4b0049; /* your in-fill */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.song-card-selected {
+  outline: 3px solid #996699;
+  outline-offset: 0;
+}
+
+  .album-cover {
+    flex: 0 0 35%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--purple);
+    background-color: #000000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .album-cover img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+.card-right {
+  flex: 1;
+  display: flex;
+  /* acts as a simple wrapper now */
+}
+
+.card-right-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* pushes button to bottom */
+  flex: 1;
+  padding: 0 0.5rem;
+}
+
+  .album-meta {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.75rem;
+    opacity: 0.9;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .song-title {
+    font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 2.4rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .song-info {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+.choose-btn {
+  margin-top: 1.25rem;
+  padding: 0.6rem 0;
+  width: 100%;                 /* fill between left/right padding of card-right-inner */
+  border-radius: 6px;
+  border: 2px solid var(#cccccc);
+  background: #333333;
+  color: #ffffff;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+  .choose-btn:hover,
+  .choose-btn:active {
+    background-color: #996699;
+    color: #ffffff;
+  }
+
+  /* RANKINGS */
+
+  .rankings {
+    margin-top: 2rem;
+  }
+
+  .rankings-toggle {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--purple);
+    background: #1a001a;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+  }
+
+  .rankings-toggle:focus {
+    outline: none;
+  }
+
+  .rankings-toggle::after {
+    content: '▾';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+  }
+
+  .rankings-panel.open + .rankings-toggle::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .rankings-panel {
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .rankings-panel.open {
+    display: block;
+  }
+
+  .rankings-section + .rankings-section {
+    margin-top: 1.5rem;
+  }
+
+  .rankings-section-title {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    text-align: center;
+  }
+
+  .rankings-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.85rem;
+  }
+
+  .rank-item:last-child {
+    border-bottom: none;
+  }
+
+  .rank-number {
+    font-weight: 700;
+    color: var(--purple);
+    min-width: 30px;
+    font-size: 0.9rem;
+  }
+
+  .rank-song {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 0.75rem;
+  }
+
+  .rank-elo {
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
+  /* FOOTER */
+
+  .footer-bar {
+    height: 5px;
+    background: linear-gradient(to right, #571857, #a13898);
+    width: 100%;
+    max-width: 960px;
+    margin: 2.5rem auto 1rem;
+  }
+
+  .footer-text {
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    padding-bottom: 1.5rem;
+  }
+
+  @media (min-width: 720px) {
+    .header-primary {
+      font-size: 4rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <img src="deftones_logo_1200px.png" alt="Deftones" class="logo">
+    <h2>We’re pitting the entire Deftones catalog against itself, two songs at a time. Click "VOTE" on the track you think is superior to help us definitively rank the best of the best. This only includes official studio releases, so no demos, remixes or unreleased singles (Sorry, Eros!)<br> We'll publish a Spotify playlist in December to show how they rank.</h2>
+  </div>
+</header>
+
+    <main class="container">
+        <div id="votingArea" class="card-container">
+            <!-- Song cards will be inserted here by JavaScript -->
+        </div>
+
+        <div class="rankings">
+            <button class="rankings-toggle" id="rankings-toggle" type="button">
+                RANKINGS
+            </button>
+            <div id="rankings-panel" class="rankings-panel">
+                <div class="rankings-section">
+                    <h2 class="rankings-section-title">THE BEST</h2>
+                    <div id="rankings-top" class="rankings-list"></div>
+                </div>
+                <div class="rankings-section">
+                    <h2 class="rankings-section-title">THE REST</h2>
+                    <div id="rankings-bottom" class="rankings-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Game state
+        const state = {
+            songs: [
+    // --- ADRENALINE (1995) ---
+    { id: 1, title: 'Bored', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 2, title: 'Minus Blindfold', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 3, title: 'One Weak', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 4, title: 'Nosebleed', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 5, title: 'Lifter', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 6, title: 'Root', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 7, title: '7 Words', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 8, title: 'Birthmark', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 9, title: 'Engine No. 9', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 10, title: 'Fireal', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+    { id: 11, title: 'Fist', album: 'Adrenaline', year: 1995, elo: 1000, cover_url: 'deftones_adrenaline.png' },
+
+    // --- AROUND THE FUR (1997) ---
+    { id: 12, title: 'My Own Summer (Shove It)', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 13, title: 'Lhabia', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 14, title: 'Mascara', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 15, title: 'Around the Fur', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 16, title: 'Rickets', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 17, title: 'Be Quiet and Drive (Far Away)', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 18, title: 'Lotion', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 19, title: 'Dai the Flu', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 20, title: 'Headup', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 21, title: 'MX', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+    { id: 22, title: 'Damone', album: 'Around the Fur', year: 1997, elo: 1000, cover_url: 'deftones_aroundthefur.png' },
+
+    // --- WHITE PONY (2000) ---
+    { id: 23, title: 'Back to School (Mini Maggit)', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 24, title: 'Feiticeira', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 25, title: 'Digital Bath', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 26, title: 'Elite', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 27, title: 'Rx Queen', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 28, title: 'Street Carp', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 29, title: 'Teenager', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 30, title: 'Knife Prty', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 31, title: 'Korea', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 32, title: 'Passenger', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 33, title: 'Change (In the House of Flies)', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 34, title: 'Pink Maggit', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+    { id: 35, title: 'The Boy\'s Republic', album: 'White Pony', year: 2000, elo: 1000, cover_url: 'deftones_whitepony.png' },
+
+    // --- DEFTONES (2003) ---
+    { id: 36, title: 'Hexagram', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 37, title: 'Needles and Pins', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 38, title: 'Minerva', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 39, title: 'Good Morning Beautiful', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 40, title: 'Deathblow', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 41, title: 'When Girls Telephone Boys', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 42, title: 'Battle-Axe', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 43, title: 'Lucky You', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 44, title: 'Bloody Cape', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 45, title: 'Anniversary of an Uninteresting Event', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+    { id: 46, title: 'Moana', album: 'Deftones', year: 2003, elo: 1000, cover_url: 'deftones_self-titled.png' },
+
+    // --- B-SIDES & RARITIES (2005) ---
+    { id: 47, title: 'Savory (Jawbox)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 48, title: 'Wax and Wane (Cocteau Twins)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 49, title: 'If Only Tonight We Could Sleep (The Cure)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 50, title: 'Sweet Dreams (Eurythmics)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 51, title: 'Simple Man (Lynyrd Skynyrd)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 52, title: 'Sinatra (Helmet)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' },
+    { id: 53, title: 'No Ordinary Love (Sade)', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' }, // ID 54 -> 53
+    { id: 54, title: 'Black Moon', album: 'BSidesRarities', year: 2005, elo: 1000, cover_url: 'deftones_bsides.png' }, // ID 55 -> 54
+
+    // --- SATURDAY NIGHT WRIST (2006) ---
+    { id: 55, title: 'Hole In the Earth', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 56 -> 55
+    { id: 56, title: 'Rapture', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 57 -> 56
+    { id: 57, title: 'Beware', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 58 -> 57
+    { id: 58, title: 'Cherry Waves', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 59 -> 58
+    { id: 59, title: 'Mein', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 60 -> 59
+    { id: 60, title: 'U,U,D,D,L,R,L,R,A,B,Select,Start', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 61 -> 60
+    { id: 61, title: 'Xerces', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 62 -> 61
+    { id: 62, title: 'Rats! Rats! Rats!', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 63 -> 62
+    { id: 63, title: 'Pink Cellphone', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 64 -> 63
+    { id: 64, title: 'Combat', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 65 -> 64
+    { id: 65, title: 'Kimdracula', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 66 -> 65
+    { id: 66, title: 'Rivière', album: 'Saturday Night Wrist', year: 2006, elo: 1000, cover_url: 'deftones_saturdaynightwrist.png' }, // ID 67 -> 66
+
+    // --- DIAMOND EYES (2010) ---
+    { id: 67, title: 'Diamond Eyes', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 68 -> 67
+    { id: 68, title: 'Royal', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 69 -> 68
+    { id: 69, title: 'CMND/CTRL', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 70 -> 69
+    { id: 70, title: 'You\'ve Seen the Butcher', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 71 -> 70
+    { id: 71, title: 'Beauty School', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 72 -> 71
+    { id: 72, title: 'Prince', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 73 -> 72
+    { id: 73, title: 'Rocket Skates', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 74 -> 73
+    { id: 74, title: 'Sextape', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 75 -> 74
+    { id: 75, title: 'Risk', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 76 -> 75
+    { id: 76, title: '976-EVIL', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 77 -> 76
+    { id: 77, title: 'This Place Is Death', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 78 -> 77
+    { id: 78, title: 'Do You Believe (The Cardigans)', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 79 -> 78
+    { id: 79, title: 'Ghosts (Japan)', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 80 -> 79
+    { id: 80, title: 'Caress (Drive Like Jehu)', album: 'Diamond Eyes', year: 2010, elo: 1000, cover_url: 'deftones_diamondeyes.png' }, // ID 81 -> 80
+
+    // --- COVERS (2011) ---
+    { id: 81, title: 'Drive (The Cars)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 82 -> 81
+    { id: 82, title: 'Please Please Please Let Me Get What I Want (The Smiths)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 83 -> 82 (Correct)
+    { id: 83, title: 'The Chauffeur (Duran Duran)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 84 -> 83
+    { id: 84, title: 'Battlestar (Eye to Eye)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 85 -> 84
+    { id: 85, title: 'Night Boat (Duran Duran)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 86 -> 85
+    { id: 86, title: 'Sleep Walk (Santo & Johnny)', album: 'Covers', year: 2011, elo: 1000, cover_url: 'deftones_covers.png' }, // ID 87 -> 86
+
+    // --- KOI NO YOKAN (2012) ---
+    { id: 87, title: 'Swerve City', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 88 -> 87
+    { id: 88, title: 'Romantic Dreams', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 89 -> 88
+    { id: 89, title: 'Leathers', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 90 -> 89
+    { id: 90, title: 'Poltergeist', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 91 -> 90
+    { id: 91, title: 'Entombed', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 92 -> 91
+    { id: 92, title: 'Graphic Nature', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 93 -> 92
+    { id: 93, title: 'Tempest', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 94 -> 93
+    { id: 94, title: 'Gauze', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 95 -> 94
+    { id: 95, title: 'Rosemary', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 96 -> 95
+    { id: 96, title: 'Goon Squad', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 97 -> 96
+    { id: 97, title: 'What Happened to You?', album: 'Koi No Yokan', year: 2012, elo: 1000, cover_url: 'deftones_koinoyokan.png' }, // ID 98 -> 97
+
+    // --- GORE (2016) ---
+    { id: 98, title: 'Prayers/Triangles', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 99 -> 98
+    { id: 99, title: 'Acid Hologram', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 100 -> 99
+    { id: 100, title: 'Doomed User', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 101 -> 100
+    { id: 101, title: 'Geometric Headress', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 102 -> 101
+    { id: 102, title: 'Hearts/Wires', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 103 -> 102
+    { id: 103, title: 'Pittura Infamante', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 104 -> 103
+    { id: 104, title: 'Xenon', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 105 -> 104
+    { id: 105, title: '(L)MIRL', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 106 -> 105
+    { id: 106, title: 'Gore', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 107 -> 106
+    { id: 107, title: 'Phantom Bride', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 108 -> 107
+    { id: 108, title: 'Rubicon', album: 'Gore', year: 2016, elo: 1000, cover_url: 'deftones_gore.png' }, // ID 109 -> 108
+
+    // --- OHMS (2020) ---
+    { id: 109, title: 'Genesis', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 110 -> 109
+    { id: 110, title: 'Ceremony', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 111 -> 110
+    { id: 111, title: 'Urantia', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 112 -> 111
+    { id: 112, title: 'Error', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 113 -> 112
+    { id: 113, title: 'The Spell of Mathematics', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 114 -> 113
+    { id: 114, title: 'Pompeji', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 115 -> 114
+    { id: 115, title: 'This Link Is Dead', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 116 -> 115
+    { id: 116, title: 'Radiant City', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 117 -> 116
+    { id: 117, title: 'Headless', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 118 -> 117
+    { id: 118, title: 'Ohms', album: 'Ohms', year: 2020, elo: 1000, cover_url: 'deftones_ohms.png' }, // ID 119 -> 118
+
+    // --- PRIVATE MUSIC (2025) ---
+    { id: 119, title: 'My Mind Is a Mountain', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 120 -> 119
+    { id: 120, title: 'Locked Club', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 121 -> 120
+    { id: 121, title: 'Ecdysis', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 122 -> 121
+    { id: 122, title: 'Infinite Source', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 123 -> 122
+    { id: 123, title: 'Souvenir', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 124 -> 123
+    { id: 124, title: 'CXZ', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 125 -> 124
+    { id: 125, title: 'I Think About You All the Time', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 126 -> 125
+    { id: 126, title: 'Milk of the Madonna', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 127 -> 126
+    { id: 127, title: 'Cut Hands', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 128 -> 127
+    { id: 128, title: 'Metal Dream', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' }, // ID 129 -> 128
+ { id: 129, title: 'Departing the Body', album: 'Private Music', year: 2025, elo: 1000, cover_url: 'deftones_privatemusic.png' } // ID 130 -> 129
+    ],
+    currentPair: [],
+    rankings: [],
+    totalComparisons: 0,
+    maxComparisons: 200,
+    kFactor: 32
+};
+
+        // DOM Elements
+        const elements = {
+            votingArea: document.getElementById('votingArea'),
+            rankingsList: document.getElementById('rankings-list')
+        };
+
+        // Initialize the app
+        function init() {
+            loadState();
+            initializeRankings();
+            getNewPair();
+        }
+
+        // Initialize rankings with all songs at starting ELO
+        function initializeRankings() {
+            state.rankings = [...state.songs].sort((a, b) => b.elo - a.elo);
+            saveState();
+        }
+
+        // Get a new pair of songs to compare
+        function getNewPair() {
+            if (state.rankings.length < 2) {
+                console.error('Not enough songs to compare');
+                return false;
+            }
+
+            // Determine albums to exclude based on the previous pair
+            const previousAlbums = new Set(
+                (state.currentPair || []).map(song => song.album)
+            );
+
+            // Filter rankings to songs not from the previous albums
+            let eligibleSongs = state.rankings.filter(song => !previousAlbums.has(song.album));
+
+            // If we don't have enough eligible songs, fall back to all rankings
+            if (eligibleSongs.length < 2) {
+                eligibleSongs = state.rankings.slice();
+            }
+
+            const index1 = Math.floor(Math.random() * eligibleSongs.length);
+            let index2;
+            do {
+                index2 = Math.floor(Math.random() * eligibleSongs.length);
+            } while (index1 === index2);
+
+            state.currentPair = [eligibleSongs[index1], eligibleSongs[index2]];
+            state.totalComparisons++;
+            
+            renderSongCards();
+            saveState();
+            return true;
+        }
+
+        // Render the song cards for the current pair
+        function renderSongCards() {
+            if (state.currentPair.length !== 2) {
+                console.error('Invalid current pair');
+                return;
+            }
+
+            const [song1, song2] = state.currentPair;
+            
+            elements.votingArea.innerHTML = `
+  <div class="song-card-frame">
+    <div class="song-card" data-song-id="${song1.id}" onclick="handleCardSelect(${song1.id}, ${song2.id})">
+      <div class="album-cover">
+        <img src="${song1.cover_url}" alt="${song1.album}"
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/300/000000/571857?text=Album+Cover'">
+      </div>
+      <div class="card-right">
+        <div class="card-right-inner">
+          <div>
+            <div class="album-meta">${song1.album} • ${song1.year}</div>
+            <p class="song-title">${song1.title}</p>
+          </div>
+          <button class="choose-btn"
+                  onclick="event.stopPropagation(); handleCardSelect(${song1.id}, ${song2.id})">
+            Vote
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="song-card-frame">
+    <div class="song-card" data-song-id="${song2.id}" onclick="handleCardSelect(${song2.id}, ${song1.id})">
+      <div class="album-cover">
+        <img src="${song2.cover_url}" alt="${song2.album}"
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/300/000000/571857?text=Album+Cover'">
+      </div>
+      <div class="card-right">
+        <div class="card-right-inner">
+          <div>
+            <div class="album-meta">${song2.album} • ${song2.year}</div>
+            <p class="song-title">${song2.title}</p>
+          </div>
+          <button class="choose-btn"
+                  onclick="event.stopPropagation(); handleCardSelect(${song2.id}, ${song1.id})">
+            Vote
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+        }
+
+        // Handle when a song is chosen
+        function handleChoice(winnerId, loserId) {
+            const winner = state.rankings.find(song => song.id === winnerId);
+            const loser = state.rankings.find(song => song.id === loserId);
+
+            if (!winner || !loser) {
+                console.error('Winner or loser not found');
+                return;
+            }
+
+            // Update ELO ratings
+            updateEloRatings(winner, loser);
+
+            // Get a new pair
+            const success = getNewPair();
+
+            // Update rankings display
+            updateRankings();
+
+            // If we can't get a new pair, we're done
+            if (!success) {
+                console.log('All comparisons complete!');
+            }
+        }
+
+        function handleCardSelect(winnerId, loserId) {
+            const selector = `.song-card[data-song-id="${winnerId}"]`;
+            const card = document.querySelector(selector);
+
+            if (!card) {
+                handleChoice(winnerId, loserId);
+                return;
+            }
+
+            card.classList.add('song-card-selected');
+
+            setTimeout(() => {
+                card.classList.remove('song-card-selected');
+                handleChoice(winnerId, loserId);
+            }, 200);
+        }
+
+        // Update ELO ratings
+        function updateEloRatings(winner, loser) {
+            const K = state.kFactor;
+            
+            // Calculate expected scores
+            const expectedScoreWinner = 1 / (1 + Math.pow(10, (loser.elo - winner.elo) / 400));
+            const expectedScoreLoser = 1 / (1 + Math.pow(10, (winner.elo - loser.elo) / 400));
+            
+            // Update ELO
+            winner.elo = Math.round(winner.elo + K * (1 - expectedScoreWinner));
+            loser.elo = Math.round(loser.elo + K * (0 - expectedScoreLoser));
+            
+            // Re-sort rankings
+            state.rankings.sort((a, b) => b.elo - a.elo);
+            
+            saveState();
+        }
+
+        // Update the rankings display
+        function updateRankings() {
+            const topContainer = document.getElementById('rankings-top');
+            const bottomContainer = document.getElementById('rankings-bottom');
+            if (!topContainer || !bottomContainer) {
+                console.error('Rankings containers not found');
+                return;
+            }
+
+            const total = state.rankings.length;
+            if (total === 0) {
+                topContainer.innerHTML = '';
+                bottomContainer.innerHTML = '';
+                return;
+            }
+
+            const topSongs = state.rankings.slice(0, 10);
+            const bottomSongs = state.rankings.slice(Math.max(total - 10, 0));
+
+            topContainer.innerHTML = topSongs.map((song, index) => `
+                <div class="rank-item">
+                    <div class="rank-number">${index + 1}</div>
+                    <div class="rank-song" title="${song.title} - ${song.album} (${song.year})">
+                        ${song.title}
+                    </div>
+                    <div class="rank-elo">${song.elo}</div>
+                </div>
+            `).join('');
+
+            bottomContainer.innerHTML = bottomSongs.map((song, index) => `
+                <div class="rank-item">
+                    <div class="rank-number">${total - bottomSongs.length + index + 1}</div>
+                    <div class="rank-song" title="${song.title} - ${song.album} (${song.year})">
+                        ${song.title}
+                    </div>
+                    <div class="rank-elo">${song.elo}</div>
+                </div>
+            `).join('');
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            try {
+                localStorage.setItem('deftonesRankerState', JSON.stringify({
+                    songs: state.songs,
+                    rankings: state.rankings,
+                    totalComparisons: state.totalComparisons
+                }));
+            } catch (e) {
+                console.error('Failed to save state:', e);
+            }
+        }
+
+        // Load state from localStorage
+        function loadState() {
+            try {
+                const savedState = localStorage.getItem('deftonesRankerState');
+                if (savedState) {
+                    const parsed = JSON.parse(savedState);
+                    
+                    // Update songs with saved ELO ratings
+                    parsed.songs.forEach(savedSong => {
+                        const existingSong = state.songs.find(s => s.id === savedSong.id);
+                        if (existingSong) {
+                            existingSong.elo = savedSong.elo;
+                        }
+                    });
+                    
+                    // Update state
+                    state.rankings = parsed.rankings || [];
+                    state.totalComparisons = parsed.totalComparisons || 0;
+                    
+                    // If we have rankings but no songs in the main array, add them
+                    if (state.rankings.length > 0 && state.songs.length === 0) {
+                        state.songs = [...state.rankings];
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load state:', e);
+            }
+        }
+
+        // Make functions available globally
+        window.handleChoice = handleChoice;
+        window.handleCardSelect = handleCardSelect;
+
+        // Initialize the app when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+
+            const toggleButton = document.getElementById('rankings-toggle');
+            const panel = document.getElementById('rankings-panel');
+
+            if (toggleButton && panel) {
+                toggleButton.addEventListener('click', () => {
+                    panel.classList.toggle('open');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
